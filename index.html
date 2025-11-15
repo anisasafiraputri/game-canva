@@ -322,6 +322,7 @@
   <div class="footer">
 🎉 Developed from Canva AI assets, refined and 
 modified by Anisa Safira Putri.  </div>
+<audio id="bgMusic" src="./music.mp3" preload="auto"></audio>  
   <script>
         // Default configuration
         const defaultConfig = {
@@ -330,7 +331,10 @@ modified by Anisa Safira Putri.  </div>
             restart_button_text: "Play Again"
         };
 
+        const bgMusic = document.getElementById('bgMusic');
+        bgMusic.volume = 0.6;
         // Game state
+  
         let gameState = {
             isPlaying: false,
             score: 0,
@@ -399,7 +403,8 @@ modified by Anisa Safira Putri.  </div>
             gameState.score = 0;
             gameState.timeLeft = 30;
             gameState.isIntensityMode = false;
-
+            bgMusic.currentTime = 0;
+            bgMusic.play().catch(e => console.log(e));
             document.getElementById('startScreen').classList.add('hidden');
             document.getElementById('endScreen').classList.add('hidden');
             document.getElementById('intensityIndicator').classList.remove('show');
@@ -415,6 +420,9 @@ modified by Anisa Safira Putri.  </div>
             clearInterval(gameState.spawnInterval);
             clearInterval(gameState.gameTimer);
 
+            bgMusic.pause();
+            bgMusic.currentTime = 0;
+         
             // Clear all active icons
             gameState.activeIcons.forEach(icon => {
                 if (icon.parentNode) {
@@ -575,5 +583,6 @@ modified by Anisa Safira Putri.  </div>
     </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99f06986f64b7b39',t:'MTc2MzIyNzE1Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
