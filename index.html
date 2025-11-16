@@ -333,11 +333,26 @@ modified by Anisa Safira Putri.  </div>
             restart_button_text: "Play Again"
         };
 
+        // --- FIX NO DELAY SOUND EFFECT ---
         const EFFECT_POOL_SIZE = 8; 
         const effectPool = [];
         
-        const clickEffect = document.getElementById('clickEffect');
-        clickEffect.volume = 1.0; // optional
+        for (let i = 0; i < EFFECT_POOL_SIZE; i++) {
+            const sfx = new Audio('./effect.mp3');
+            sfx.volume = 1.0;
+            effectPool.push(sfx);
+        }
+        
+        function playEffect() {
+            for (const sfx of effectPool) {
+                if (sfx.paused) {
+                    sfx.currentTime = 0;
+                    sfx.play();
+                    return;
+                }
+            }
+        }
+        
 
         const failSound = document.getElementById('failSound');
         failSound.volume = 1.0;
@@ -526,22 +541,8 @@ modified by Anisa Safira Putri.  </div>
                 catchAI(icon, e.clientX || e.touches[0].clientX, e.clientY || e.touches[0].clientY);
             };
 
-            // Deteksi HP atau PC
-            const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-            
-            // Event handler tanpa delay
-            if (isMobile) {
-                icon.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    handleCatch(e);
-                }, { passive: false });
-            } else {
-                icon.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    handleCatch(e);
-                });
-            }
-
+            icon.addEventListener('click', handleCatch);
+            icon.addEventListener('touchstart', handleCatch, { passive: false });
 
             playArea.appendChild(icon);
             gameState.activeIcons.add(icon);
@@ -566,8 +567,7 @@ modified by Anisa Safira Putri.  </div>
             gameState.score += 10;
             gameState.activeIcons.delete(icon);
 
-            clickEffect.currentTime = 0;
-            clickEffect.play().catch(e => console.log(e));
+            playEffect();
          
             // Add clicked animation
             icon.classList.add('clicked');
@@ -616,6 +616,7 @@ modified by Anisa Safira Putri.  </div>
     </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99f06986f64b7b39',t:'MTc2MzIyNzE1Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
 
