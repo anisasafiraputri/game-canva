@@ -324,6 +324,7 @@
 modified by Anisa Safira Putri.  </div>
 <audio id="clickEffect" src="./effect.mp3" preload="auto"></audio>
 <audio id="bgMusic" src="./music.mp3" preload="auto"></audio>  
+<audio id="failSound" src="./fail.mp3" preload="auto"></audio>
   <script>
         // Default configuration
         const defaultConfig = {
@@ -350,7 +351,10 @@ modified by Anisa Safira Putri.  </div>
                 }
             }
         }
-   
+
+        const failSound = document.getElementById('failSound');
+        failSound.volume = 1.0;
+
         const bgMusic = document.getElementById('bgMusic');
         bgMusic.volume = 0.6;
         // Game state
@@ -441,22 +445,26 @@ modified by Anisa Safira Putri.  </div>
             gameState.isPlaying = false;
             clearInterval(gameState.spawnInterval);
             clearInterval(gameState.gameTimer);
-
+        
+            // Stop background music
             bgMusic.pause();
             bgMusic.currentTime = 0;
-         
-            // Clear all active icons
+        
+            // 🔊 Play fail sound (simple, no pool, same as bgMusic)
+            failSound.currentTime = 0;
+            failSound.play().catch(e => console.log(e));
+        
+            // Clear icons
             gameState.activeIcons.forEach(icon => {
-                if (icon.parentNode) {
-                    icon.parentNode.removeChild(icon);
-                }
+                if (icon.parentNode) icon.parentNode.removeChild(icon);
             });
             gameState.activeIcons.clear();
-
-            // Show end screen
+        
+            // Show final screen
             document.getElementById('finalScore').textContent = `Score: ${gameState.score}`;
             document.getElementById('scoreMessage').textContent = getScoreMessage(gameState.score);
             document.getElementById('endScreen').classList.remove('hidden');
+        
             document.getElementById('intensityIndicator').classList.remove('show');
             document.querySelector('.footer').classList.remove('hidden');
         }
@@ -608,6 +616,7 @@ modified by Anisa Safira Putri.  </div>
     </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99f06986f64b7b39',t:'MTc2MzIyNzE1Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
 
