@@ -332,8 +332,27 @@ modified by Anisa Safira Putri.  </div>
             restart_button_text: "Play Again"
         };
 
-        const clickEffect = document.getElementById('clickEffect');
-        clickEffect.volume = 1.0; // optional
+        // SOUND EFFECT POOL (anti delay)
+        const effectSources = [];
+        const EFFECT_POOL_SIZE = 8; // bisa dinaikkan
+        
+        for (let i = 0; i < EFFECT_POOL_SIZE; i++) {
+            const audio = new Audio('./effect.mp3');
+            audio.volume = 1.0;
+            effectSources.push(audio);
+        }
+        
+        // function untuk play tanpa delay
+        function playEffect() {
+            for (let audio of effectSources) {
+                if (audio.paused) {
+                    audio.currentTime = 0;
+                    audio.play();
+                    return;
+                }
+            }
+        }
+
    
         const bgMusic = document.getElementById('bgMusic');
         bgMusic.volume = 0.6;
@@ -540,9 +559,9 @@ modified by Anisa Safira Putri.  </div>
             
             gameState.score += 10;
             gameState.activeIcons.delete(icon);
+         
+            playEffect();
 
-            clickEffect.currentTime = 0;
-            clickEffect.play().catch(e => console.log(e));
          
             // Add clicked animation
             icon.classList.add('clicked');
@@ -592,6 +611,7 @@ modified by Anisa Safira Putri.  </div>
     </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99f06986f64b7b39',t:'MTc2MzIyNzE1Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
 
